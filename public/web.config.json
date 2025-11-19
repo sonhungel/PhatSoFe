@@ -1,0 +1,9 @@
+{
+  "api": {
+    "baseUrl": "http://localhost:5140/api"
+  },
+  "app": {
+    "name": "PhatSoFe",
+    "version": "1.0.0"
+  }
+}
