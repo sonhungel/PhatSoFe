@@ -162,103 +162,49 @@
             }
           }
         }
-      }
-    },
-    "/api/Management/rooms/donvi/{donviId}": {
-      "get": {
+      },
+      "post": {
         "tags": [
           "Management"
         ],
-        "summary": "Lấy danh sách phòng theo đơn vị",
-        "parameters": [
-          {
-            "name": "donviId",
-            "in": "path",
-            "description": "ID đơn vị",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/VnptPhatsoRoom"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/VnptPhatsoRoom"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/VnptPhatsoRoom"
-                  }
-                }
+        "summary": "Tạo mới máy in",
+        "requestBody": {
+          "description": "Thông tin máy in",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VnptPhatsoPrinter"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VnptPhatsoPrinter"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/VnptPhatsoPrinter"
               }
             }
           }
-        }
-      }
-    },
-    "/api/Management/callers/donvi/{donviId}": {
-      "get": {
-        "tags": [
-          "Management"
-        ],
-        "summary": "Lấy danh sách caller theo đơn vị",
-        "parameters": [
-          {
-            "name": "donviId",
-            "in": "path",
-            "description": "ID đơn vị",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
+        },
         "responses": {
           "200": {
             "description": "OK",
             "content": {
               "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/VnptPhatsoCaller"
-                  }
+                  "$ref": "#/components/schemas/VnptPhatsoPrinter"
                 }
               },
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/VnptPhatsoCaller"
-                  }
+                  "$ref": "#/components/schemas/VnptPhatsoPrinter"
                 }
               },
               "text/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/VnptPhatsoCaller"
-                  }
+                  "$ref": "#/components/schemas/VnptPhatsoPrinter"
                 }
               }
             }
@@ -328,6 +274,243 @@
         }
       }
     },
+    "/api/Management/printers/{id}": {
+      "put": {
+        "tags": [
+          "Management"
+        ],
+        "summary": "Cập nhật máy in",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID máy in",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Thông tin máy in cập nhật",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VnptPhatsoPrinter"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VnptPhatsoPrinter"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/VnptPhatsoPrinter"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Management"
+        ],
+        "summary": "Xóa máy in",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID máy in",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Management/rooms/donvi/{donviId}": {
+      "get": {
+        "tags": [
+          "Management"
+        ],
+        "summary": "Lấy danh sách phòng theo đơn vị",
+        "parameters": [
+          {
+            "name": "donviId",
+            "in": "path",
+            "description": "ID đơn vị",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VnptPhatsoRoom"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VnptPhatsoRoom"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VnptPhatsoRoom"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Management/rooms": {
+      "post": {
+        "tags": [
+          "Management"
+        ],
+        "summary": "Tạo mới phòng",
+        "requestBody": {
+          "description": "Thông tin phòng",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VnptPhatsoRoom"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VnptPhatsoRoom"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/VnptPhatsoRoom"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/VnptPhatsoRoom"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VnptPhatsoRoom"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VnptPhatsoRoom"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Management/rooms/{id}": {
+      "put": {
+        "tags": [
+          "Management"
+        ],
+        "summary": "Cập nhật phòng",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID phòng",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Thông tin phòng cập nhật",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VnptPhatsoRoom"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VnptPhatsoRoom"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/VnptPhatsoRoom"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Management"
+        ],
+        "summary": "Xóa phòng",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID phòng",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Management/callers/{callerId}/verify": {
       "post": {
         "tags": [
@@ -383,6 +566,333 @@
               "text/json": {
                 "schema": {
                   "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Management/callers/donvi/{donviId}": {
+      "get": {
+        "tags": [
+          "Management"
+        ],
+        "summary": "Lấy danh sách caller theo đơn vị",
+        "parameters": [
+          {
+            "name": "donviId",
+            "in": "path",
+            "description": "ID đơn vị",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VnptPhatsoCaller"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VnptPhatsoCaller"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VnptPhatsoCaller"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Management/callers": {
+      "post": {
+        "tags": [
+          "Management"
+        ],
+        "summary": "Tạo mới caller",
+        "requestBody": {
+          "description": "Thông tin caller",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VnptPhatsoCaller"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VnptPhatsoCaller"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/VnptPhatsoCaller"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/VnptPhatsoCaller"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VnptPhatsoCaller"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VnptPhatsoCaller"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Management/callers/{id}": {
+      "put": {
+        "tags": [
+          "Management"
+        ],
+        "summary": "Cập nhật caller",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID caller",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Thông tin caller cập nhật",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VnptPhatsoCaller"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VnptPhatsoCaller"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/VnptPhatsoCaller"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Management"
+        ],
+        "summary": "Xóa caller",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID caller",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Management/room-groups/{id}": {
+      "get": {
+        "tags": [
+          "Management"
+        ],
+        "summary": "Lấy nhóm phòng theo ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID nhóm phòng",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/VnptPhatsoRoomGroup"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VnptPhatsoRoomGroup"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VnptPhatsoRoomGroup"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Management"
+        ],
+        "summary": "Cập nhật nhóm phòng",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID nhóm phòng",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Thông tin nhóm phòng cập nhật",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VnptPhatsoRoomGroup"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VnptPhatsoRoomGroup"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/VnptPhatsoRoomGroup"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Management"
+        ],
+        "summary": "Xóa nhóm phòng",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID nhóm phòng",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Management/room-groups": {
+      "post": {
+        "tags": [
+          "Management"
+        ],
+        "summary": "Tạo mới nhóm phòng",
+        "requestBody": {
+          "description": "Thông tin nhóm phòng",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VnptPhatsoRoomGroup"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VnptPhatsoRoomGroup"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/VnptPhatsoRoomGroup"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/VnptPhatsoRoomGroup"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VnptPhatsoRoomGroup"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VnptPhatsoRoomGroup"
                 }
               }
             }

@@ -8,7 +8,7 @@ import type { VnptPhatsoRoom } from './VnptPhatsoRoom';
 export type VnptDonvi = {
     id?: number;
     tenDonvi?: string | null;
-    enable?: number | null;
+    enable?: boolean | null;
     username?: string | null;
     password?: string | null;
     rooms?: Array<VnptPhatsoRoom> | null;

@@ -18,13 +18,13 @@ export type VnptPhatsoRoom = {
     displayOrder?: number | null;
     startNum?: number | null;
     printName?: string | null;
-    haveEmergency?: number | null;
-    isBackup?: number | null;
+    haveEmergency?: boolean | null;
+    isBackup?: boolean | null;
     roomSubname?: string | null;
+
     roomGroup?: VnptPhatsoRoomGroup;
     donvi?: VnptDonvi;
     queues?: Array<VnptPhatsoQueue> | null;
     printerRooms?: Array<VnptPhatsoPrinterRoom> | null;
     callers?: Array<VnptPhatsoCaller> | null;
 };
-

@@ -2,10 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export { ApiError } from './core/ApiError';
-export { CancelablePromise, CancelError } from './core/CancelablePromise';
-export { OpenAPI } from './core/OpenAPI';
-export type { OpenAPIConfig } from './core/OpenAPI';
 
 export type { CallQueueRequest } from './models/CallQueueRequest';
 export type { CallQueueResponse } from './models/CallQueueResponse';
@@ -25,7 +21,3 @@ export type { VnptPhatsoRoomGroup } from './models/VnptPhatsoRoomGroup';
 export type { WaitingQueueRequest } from './models/WaitingQueueRequest';
 export type { WaitingQueueResponse } from './models/WaitingQueueResponse';
 
-export { AuthService } from './services/AuthService';
-export { ManagementService } from './services/ManagementService';
-export { PhatSoApiService } from './services/PhatSoApiService';
-export { QueueService } from './services/QueueService';

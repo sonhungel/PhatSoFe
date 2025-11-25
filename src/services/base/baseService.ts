@@ -1,4 +1,5 @@
 import axios, { type AxiosInstance } from "axios";
+import { getToken, setToken, removeToken} from "../../utils/auth";
 
 interface WebConfig {
   api: {
@@ -11,13 +12,26 @@ interface WebConfig {
 }
 
 class BaseService {
+  private static instance: BaseService;
   private token: string | undefined | null = null;
   private api!: AxiosInstance; // Use definite assignment assertion
   private config: WebConfig | null = null;
   private baseUrl: string = "http://localhost:5140/api"; // fallback
 
-  constructor() {
+  private constructor() {
+    // Initialize token from auth utils
+    this.token = getToken();
+    // Initialize axios immediately with fallback config
+    this.initializeAxios();
+    // Then try to load config asynchronously
     this.initializeConfig();
+  }
+
+  public static getInstance(): BaseService {
+    if (!BaseService.instance) {
+      BaseService.instance = new BaseService();
+    }
+    return BaseService.instance;
   }
 
   private async initializeConfig(): Promise<void> {
@@ -32,21 +46,19 @@ class BaseService {
       this.config = await response.json();
       this.baseUrl = this.config!.api.baseUrl;
 
-      console.log('Config loaded successfully. Base URL:', this.baseUrl);
-
       // Reinitialize axios with the loaded baseURL
       this.initializeAxios();
 
     } catch (error) {
       console.error('Failed to load config, using fallback baseURL:', this.baseUrl, error);
-      // Use fallback and initialize axios
-      this.initializeAxios();
+      // Keep using fallback configuration
     }
   }
 
   private initializeAxios(): void {
     this.api = axios.create({
       baseURL: this.baseUrl,
+      timeout: 10000, // Add reasonable timeout
     });
 
     this.api.interceptors.request.use(
@@ -57,6 +69,21 @@ class BaseService {
         return config;
       },
       (error) => Promise.reject(error)
+    );
+
+    this.api.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        // Handle common errors
+        if (error.response?.status === 401) {
+          // Token expired, clear it
+          this.setToken(null);
+          removeToken();
+          // Optionally trigger a global logout event or redirect
+          console.log('Token expired due to 401 response');
+        }
+        return Promise.reject(error);
+      }
     );
   }
 
@@ -72,6 +99,11 @@ class BaseService {
 
   setToken(token: string | undefined | null) {
     this.token = token;
+    if (token) {
+      setToken(token);
+    } else {
+      removeToken();
+    }
   }
 
   get http() {
@@ -79,4 +111,5 @@ class BaseService {
   }
 }
 
-export const baseService = new BaseService();
+// Export the singleton instance
+export const baseService = BaseService.getInstance();

@@ -1,12 +1,22 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { FormEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Login.css';
 import { login } from '../../services/authService';
+import { isAuthenticated, setToken } from '../../utils/auth';
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // If token exists and is valid, redirect to management page
+    if (isAuthenticated()) {
+      navigate('/management');
+    }
+  }, []);
   
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -20,9 +30,10 @@ const Login = () => {
         // save token
         if(res.token)
         {
-            localStorage.setItem("token", res.token);
+            setToken(res.token);
         }
-        // redirect or update UI
+        // redirect to management page
+        navigate('/management');
     }
     catch(err: any){
         setError(err.message);

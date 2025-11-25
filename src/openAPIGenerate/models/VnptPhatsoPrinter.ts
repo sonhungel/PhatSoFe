@@ -8,7 +8,7 @@ export type VnptPhatsoPrinter = {
     id?: number;
     donviId?: number | null;
     name?: string | null;
-    enable?: number | null;
+    enable?: boolean | null;
     passVerify?: string | null;
     donvi?: VnptDonvi;
     printerRooms?: Array<VnptPhatsoPrinterRoom> | null;

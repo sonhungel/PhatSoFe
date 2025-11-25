@@ -2,9 +2,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  height: 100vh;
+  width: 100vw;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
 }
 
 .login-card {
@@ -115,4 +120,43 @@
 
 .signup-link a:hover {
   text-decoration: underline;
+}
+
+/* Responsive design for full screen */
+@media (max-width: 768px) {
+  .login-container {
+    padding: 10px;
+    align-items: flex-start;
+    padding-top: 50px;
+  }
+
+  .login-card {
+    padding: 30px 20px;
+    max-width: 90%;
+    margin: 0 auto;
+  }
+
+  .login-title {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-container {
+    padding: 5px;
+    padding-top: 30px;
+  }
+
+  .login-card {
+    padding: 25px 15px;
+    max-width: 95%;
+  }
+
+  .login-title {
+    font-size: 22px;
+  }
+
+  .login-subtitle {
+    font-size: 13px;
+  }
 }
