@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import type { DonviItem } from '../items/managementItem';
-import { createDonvi, updateDonvi } from '../../../services/managementService';
+import { createDonvi, } from '../../../services/managementService';
 import './DonviPopup.css';
 
 interface DonviPopupProps {

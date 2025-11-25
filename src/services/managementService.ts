@@ -11,13 +11,6 @@ export interface CreateDonviRequest {
   password: string;
 }
 
-export interface UpdateDonviRequest {
-  tenDonvi: string;
-  enable: boolean;
-  username: string;
-  password: string;
-}
-
 export interface CreatePrinterRequest {
   name: string;
   donviId: number;
@@ -118,10 +111,6 @@ export async function getDonvis(): Promise<VnptDonvi[]> {
 export async function createDonvi(payload: CreateDonviRequest): Promise<VnptDonvi> {
   const { data } = await baseService.http.post<VnptDonvi>('/Management/donvis', payload);
   return data;
-}
-
-export async function updateDonvi(id: number, payload: UpdateDonviRequest): Promise<void> {
-  await baseService.http.put(`/Management/donvis/${id}`, payload);
 }
 
 export async function deleteDonvi(id: number): Promise<void> {
