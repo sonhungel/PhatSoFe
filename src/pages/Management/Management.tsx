@@ -16,6 +16,7 @@ import CallerPopup from './components/CallerPopup';
 import RoomPopup from './components/RoomPopup';
 import PrinterPopup from './components/PrinterPopup';
 import RoomGroupPopup from './components/RoomGroupPopup';
+import DonviPopup from './components/DonviPopup';
 import ConfirmationPopup from './components/ConfirmationPopup';
 import { removeToken } from '../../utils/auth';
 import { useAuthCheck } from '../../hooks/useAuthCheck';
@@ -34,6 +35,7 @@ const Management = () => {
   const [pageSize, setPageSize] = useState(10);
 
   const [showCallerPopup, setShowCallerPopup] = useState(false);
+  const [showDonviPopup, setShowDonviPopup] = useState(false);
   const [showRoomPopup, setShowRoomPopup] = useState(false);
   const [showPrinterPopup, setShowPrinterPopup] = useState(false);
   const [showRoomGroupPopup, setShowRoomGroupPopup] = useState(false);
@@ -113,6 +115,10 @@ const Management = () => {
     }
     setRoomGroupDataLoading(false);
     setShowRoomGroupPopup(true);
+  };
+
+  const handleAddDonviClick = () => {
+    setShowDonviPopup(true);
   };
 
   const handleEditCaller = (caller: CallerItem) => {
@@ -296,6 +302,7 @@ const Management = () => {
     <div className="table-container">
       <div className="table-header">
         <h3>Donvi Management</h3>
+        <button className="add-btn" onClick={handleAddDonviClick}>Add DonVi</button>
       </div>
       <table className="data-table">
         <thead>
@@ -326,6 +333,15 @@ const Management = () => {
         </tbody>
       </table>
       {renderPagination(currentData.length)}
+      <DonviPopup
+        isOpen={showDonviPopup}
+        onClose={() => {
+          setShowDonviPopup(false);
+        }}
+        onSuccess={() => {
+          loadData('donvi');
+        }}
+      />
     </div>
     );
   };
