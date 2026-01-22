@@ -4,7 +4,9 @@
 /* eslint-disable */
 import type { VnptPhatsoCaller } from './VnptPhatsoCaller';
 import type { VnptPhatsoPrinter } from './VnptPhatsoPrinter';
+import type { VnptPhatsoQueueLog } from './VnptPhatsoQueueLog';
 import type { VnptPhatsoRoom } from './VnptPhatsoRoom';
+import type { VnptPhatsoRoomGroup } from './VnptPhatsoRoomGroup';
 export type VnptDonvi = {
     id?: number;
     tenDonvi?: string | null;
@@ -14,5 +16,7 @@ export type VnptDonvi = {
     rooms?: Array<VnptPhatsoRoom> | null;
     printers?: Array<VnptPhatsoPrinter> | null;
     callers?: Array<VnptPhatsoCaller> | null;
+    vnptPhatsoQueueLogs?: Array<VnptPhatsoQueueLog> | null;
+    vnptPhatsoRoomGroups?: Array<VnptPhatsoRoomGroup> | null;
 };
 

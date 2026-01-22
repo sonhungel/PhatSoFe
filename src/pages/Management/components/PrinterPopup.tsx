@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { DonviItem, PrinterItem } from '../items/managementItem';
 import { createPrinter, updatePrinter } from '../../../services/managementService';
-import './PrinterPopup.css';
 
 interface PrinterPopupProps {
   isOpen: boolean;
@@ -109,18 +108,18 @@ const PrinterPopup = ({ isOpen, onClose, onSuccess, donviData, editData }: Print
   if (!isOpen) return null;
 
   return (
-    <div className="popup-overlay" onClick={onClose}>
-      <div className="popup-content" onClick={(e) => e.stopPropagation()}>
-        <div className="popup-header">
-          <h3>{isEditMode ? 'Edit Printer' : 'Add New Printer'}</h3>
-          <button className="close-btn" onClick={handleClose}>×</button>
+    <div className="fixed inset-0 bg-gray-300 bg-opacity-50 flex justify-center items-center z-50" onClick={onClose}>
+      <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 max-h-[90vh] overflow-hidden flex flex-col" onClick={(e) => e.stopPropagation()}>
+        <div className="p-6 border-b border-gray-200 flex justify-between items-center">
+          <h3 className="text-lg font-semibold text-gray-800 m-0">{isEditMode ? 'Edit Printer' : 'Add New Printer'}</h3>
+          <button className="text-gray-400 hover:text-gray-600 text-xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors" onClick={handleClose}>×</button>
         </div>
 
-        <form onSubmit={handleSubmit} className="popup-form">
-          {error && <div className="error-message">{error}</div>}
+        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+          {error && <div className="text-red-600 text-sm bg-red-50 p-3 rounded-lg">{error}</div>}
 
-          <div className="form-group">
-            <label htmlFor="name">Printer Name *</label>
+          <div className="space-y-2">
+            <label htmlFor="name" className="block text-sm font-medium text-gray-700">Printer Name *</label>
             <input
               type="text"
               id="name"
@@ -128,17 +127,19 @@ const PrinterPopup = ({ isOpen, onClose, onSuccess, donviData, editData }: Print
               value={formData.name}
               onChange={handleInputChange}
               placeholder="Enter printer name"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               required
             />
           </div>
 
-          <div className="form-group">
-            <label htmlFor="donviId">Donvi *</label>
+          <div className="space-y-2">
+            <label htmlFor="donviId" className="block text-sm font-medium text-gray-700">Donvi *</label>
             <select
               id="donviId"
               name="donviId"
               value={formData.donviId}
               onChange={handleInputChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               required
             >
               <option value="">Select Donvi</option>
@@ -150,8 +151,8 @@ const PrinterPopup = ({ isOpen, onClose, onSuccess, donviData, editData }: Print
             </select>
           </div>
 
-          <div className="form-group">
-            <label htmlFor="passVerify">Pass Verify</label>
+          <div className="space-y-2">
+            <label htmlFor="passVerify" className="block text-sm font-medium text-gray-700">Pass Verify</label>
             <input
               type="text"
               id="passVerify"
@@ -159,26 +160,28 @@ const PrinterPopup = ({ isOpen, onClose, onSuccess, donviData, editData }: Print
               value={formData.passVerify}
               onChange={handleInputChange}
               placeholder="Enter pass verify (optional)"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
 
-          <div className="form-group">
-            <label className="checkbox-label">
+          <div className="space-y-2">
+            <label className="flex items-center space-x-2">
               <input
                 type="checkbox"
                 name="enable"
                 checked={formData.enable}
                 onChange={handleInputChange}
+                className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
               />
-              Enable
+              <span className="text-sm font-medium text-gray-700">Enable</span>
             </label>
           </div>
 
-          <div className="popup-actions">
-            <button type="button" className="cancel-btn" onClick={handleClose} disabled={loading}>
+          <div className="flex justify-end space-x-3 pt-4">
+            <button type="button" className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors" onClick={handleClose} disabled={loading}>
               Cancel
             </button>
-            <button type="submit" className="submit-btn" disabled={loading}>
+            <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors" disabled={loading}>
               {loading ? (isEditMode ? 'Updating...' : 'Creating...') : (isEditMode ? 'Update Printer' : 'Create Printer')}
             </button>
           </div>

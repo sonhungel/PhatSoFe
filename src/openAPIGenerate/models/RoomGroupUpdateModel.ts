@@ -2,15 +2,11 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { VnptDonvi } from './VnptDonvi';
-import type { VnptPhatsoRoom } from './VnptPhatsoRoom';
-export type VnptPhatsoRoomGroup = {
+export type RoomGroupUpdateModel = {
     id?: number;
-    groupName: string;
+    groupName?: string | null;
     minNum?: number | null;
     maxNum?: number | null;
     donviId?: number | null;
-    donvi?: VnptDonvi;
-    rooms?: Array<VnptPhatsoRoom> | null;
 };
 

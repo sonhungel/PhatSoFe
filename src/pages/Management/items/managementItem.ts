@@ -4,6 +4,8 @@ export interface CallerItem {
   callerName: string;
   passVerify: string;
   roomId: number;
+  donviName: string;
+  roomName: string;
 }
 
 export interface RoomItem {
@@ -20,6 +22,8 @@ export interface RoomItem {
   haveEmergency: boolean;
   isBackup: boolean;
   roomSubname: string;
+  roomGroupName: string;
+  donviName : string;
 }
 
 export interface PrinterItem {
@@ -28,6 +32,7 @@ export interface PrinterItem {
   name: string;
   enable: boolean;
   passVerify: string;
+  donviName: string;
 }
 
 
@@ -37,6 +42,7 @@ export interface RoomGroupItem {
   minNum: number;
   maxNum: number;
   donviId: number;
+  donviName: string;
 }
 
 export interface DonviItem {

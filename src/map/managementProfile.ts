@@ -1,9 +1,10 @@
 import type {
     VnptDonvi,
-  VnptPhatsoPrinter,
+  VnptPhatsoPrinterResponseModel,
   VnptPhatsoRoom,
-  VnptPhatsoRoomGroup,
-  VnptPhatsoCaller
+  VnptPhatsoCallerResponseModel,
+  VnptPhatSoRoomGroupResponseModel,
+  VnptPhatSoRoomResponseModel
 } from '../openAPIGenerate';
 
 import type {
@@ -18,49 +19,54 @@ import type {
 
 
 // Simple mapping functions
-export function mapPrinterToPrinterItem(printer: VnptPhatsoPrinter): PrinterItem {
+export function mapPrinterToPrinterItem(printer: VnptPhatsoPrinterResponseModel): PrinterItem {
   return {
     id: printer.id || 0,
     donviId: printer.donviId || 0,
     name: printer.name || '',
-    enable: Boolean(printer.enable),
-    passVerify: printer.passVerify || ''
+    enable: printer.enable || false,
+    passVerify: printer.passVerify || '',
+    donviName: printer.donviName || ''
   };
 }
 
-export function mapPrintersToPrinterItems(printers: VnptPhatsoPrinter[]): PrinterItem[] {
+export function mapPrintersToPrinterItems(printers: VnptPhatsoPrinterResponseModel[]): PrinterItem[] {
   return printers.map(mapPrinterToPrinterItem);
 }
 
-export function mapCallerToCallerItem(caller: VnptPhatsoCaller): CallerItem {
+export function mapCallerToCallerItem(caller: VnptPhatsoCallerResponseModel): CallerItem {
   return {
     id: caller.id || 0,
     donviId: caller.donviId || 0,
     callerName: caller.callerName || '',
     passVerify: caller.passVerify || '',
-    roomId: caller.roomId || 0
+    roomId: caller.roomId || 0,
+    roomName: caller.roomName || '',
+    donviName: caller.donviName || ''
   };
 }
 
-export function mapCallersToCallerItems(callers: VnptPhatsoCaller[]): CallerItem[] {
+export function mapCallersToCallerItems(callers: VnptPhatsoCallerResponseModel[]): CallerItem[] {
   return callers.map(mapCallerToCallerItem);
 }
 
-export function mapRoomToRoomItem(room: VnptPhatsoRoom): RoomItem {
+export function mapRoomToRoomItem(room: VnptPhatSoRoomResponseModel): RoomItem {
   return {
     id: room.id || 0,
     donviId: room.donviId || 0,
     roomName: room.roomName || '',
     roomGroupId: room.roomGroupId || 0,
-    enabled: Boolean(room.enabled === 1),
+    enabled: room.enabled || false,
     lastPrintDate: room.lastPrintDate || '',
     printedNum: room.printedNum || 0,
     displayOrder: room.displayOrder || 0,
     startNum: room.startNum || 0,
     printName: room.printName || '',
-    haveEmergency: Boolean(room.haveEmergency),
-    isBackup: Boolean(room.isBackup),
-    roomSubname: room.roomSubname || ''
+    haveEmergency: room.haveEmergency || false,
+    isBackup: room.isBackup || false,
+    roomSubname: room.roomSubname || '',
+    roomGroupName: room.roomGroupName || '',
+    donviName : room.donviName || ''
   };
 }
 
@@ -68,17 +74,18 @@ export function mapRoomsToRoomItems(rooms: VnptPhatsoRoom[]): RoomItem[] {
   return rooms.map(mapRoomToRoomItem);
 }
 
-export function mapRoomGroupToRoomGroupItem(roomGroup: VnptPhatsoRoomGroup): RoomGroupItem {
+export function mapRoomGroupToRoomGroupItem(roomGroup: VnptPhatSoRoomGroupResponseModel): RoomGroupItem {
   return {
     id: roomGroup.id || 0,
     groupName: roomGroup.groupName || '',
     minNum: roomGroup.minNum || 0,
     maxNum: roomGroup.maxNum || 0,
-    donviId: roomGroup.donviId || 0
+    donviId: roomGroup.donviId || 0,
+    donviName: roomGroup.donviName || ''
   };
 }
 
-export function mapRoomGroupsToRoomGroupItems(roomGroups: VnptPhatsoRoomGroup[]): RoomGroupItem[] {
+export function mapRoomGroupsToRoomGroupItems(roomGroups: VnptPhatSoRoomGroupResponseModel[]): RoomGroupItem[] {
   return roomGroups.map(mapRoomGroupToRoomGroupItem);
 }
 

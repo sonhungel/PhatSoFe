@@ -123,6 +123,79 @@
             }
           }
         }
+      },
+      "post": {
+        "tags": [
+          "Management"
+        ],
+        "summary": "Tạo mới đơn vị",
+        "requestBody": {
+          "description": "Thông tin đơn vị",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DonviCreateModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DonviCreateModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/DonviCreateModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/VnptDonvi"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VnptDonvi"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VnptDonvi"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Management/donvis/{id}": {
+      "delete": {
+        "tags": [
+          "Management"
+        ],
+        "summary": "Xóa đơn vị",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID đơn vị",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
       }
     },
     "/api/Management/printers": {
@@ -139,7 +212,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/VnptPhatsoPrinter"
+                    "$ref": "#/components/schemas/VnptPhatsoPrinterResponseModel"
                   }
                 }
               },
@@ -147,7 +220,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/VnptPhatsoPrinter"
+                    "$ref": "#/components/schemas/VnptPhatsoPrinterResponseModel"
                   }
                 }
               },
@@ -155,7 +228,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/VnptPhatsoPrinter"
+                    "$ref": "#/components/schemas/VnptPhatsoPrinterResponseModel"
                   }
                 }
               }
@@ -173,17 +246,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/VnptPhatsoPrinter"
+                "$ref": "#/components/schemas/PrinterCreateModel"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/VnptPhatsoPrinter"
+                "$ref": "#/components/schemas/PrinterCreateModel"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/VnptPhatsoPrinter"
+                "$ref": "#/components/schemas/PrinterCreateModel"
               }
             }
           }
@@ -205,6 +278,44 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/VnptPhatsoPrinter"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Management/allPrinters": {
+      "get": {
+        "tags": [
+          "Management"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VnptPhatsoPrinter"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VnptPhatsoPrinter"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VnptPhatsoPrinter"
+                  }
                 }
               }
             }
@@ -297,17 +408,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/VnptPhatsoPrinter"
+                "$ref": "#/components/schemas/PrinterUpdateModel"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/VnptPhatsoPrinter"
+                "$ref": "#/components/schemas/PrinterUpdateModel"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/VnptPhatsoPrinter"
+                "$ref": "#/components/schemas/PrinterUpdateModel"
               }
             }
           }
@@ -393,7 +504,134 @@
         }
       }
     },
+    "/api/Management/roomsnotoken/donvi/{donviId}": {
+      "get": {
+        "tags": [
+          "Management"
+        ],
+        "summary": "Lấy danh sách phòng theo đơn vị",
+        "parameters": [
+          {
+            "name": "donviId",
+            "in": "path",
+            "description": "ID đơn vị",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VnptPhatsoRoom"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VnptPhatsoRoom"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VnptPhatsoRoom"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Management/roomsWithToken": {
+      "get": {
+        "tags": [
+          "Management"
+        ],
+        "summary": "Lấy danh sách phòng theo đơn vị",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VnptPhatSoRoomResponseModel"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VnptPhatSoRoomResponseModel"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VnptPhatSoRoomResponseModel"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Management/rooms": {
+      "get": {
+        "tags": [
+          "Management"
+        ],
+        "summary": "Lấy tất cả phòng",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VnptPhatsoRoom"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VnptPhatsoRoom"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VnptPhatsoRoom"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "post": {
         "tags": [
           "Management"
@@ -404,17 +642,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/VnptPhatsoRoom"
+                "$ref": "#/components/schemas/RoomCreateModel"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/VnptPhatsoRoom"
+                "$ref": "#/components/schemas/RoomCreateModel"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/VnptPhatsoRoom"
+                "$ref": "#/components/schemas/RoomCreateModel"
               }
             }
           }
@@ -466,17 +704,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/VnptPhatsoRoom"
+                "$ref": "#/components/schemas/RoomUpdateModel"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/VnptPhatsoRoom"
+                "$ref": "#/components/schemas/RoomUpdateModel"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/VnptPhatsoRoom"
+                "$ref": "#/components/schemas/RoomUpdateModel"
               }
             }
           }
@@ -625,6 +863,43 @@
       }
     },
     "/api/Management/callers": {
+      "get": {
+        "tags": [
+          "Management"
+        ],
+        "summary": "Lấy tất cả caller",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VnptPhatsoCallerResponseModel"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VnptPhatsoCallerResponseModel"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VnptPhatsoCallerResponseModel"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "post": {
         "tags": [
           "Management"
@@ -635,17 +910,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/VnptPhatsoCaller"
+                "$ref": "#/components/schemas/CallerCreateModel"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/VnptPhatsoCaller"
+                "$ref": "#/components/schemas/CallerCreateModel"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/VnptPhatsoCaller"
+                "$ref": "#/components/schemas/CallerCreateModel"
               }
             }
           }
@@ -697,17 +972,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/VnptPhatsoCaller"
+                "$ref": "#/components/schemas/CallerUpdateModel"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/VnptPhatsoCaller"
+                "$ref": "#/components/schemas/CallerUpdateModel"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/VnptPhatsoCaller"
+                "$ref": "#/components/schemas/CallerUpdateModel"
               }
             }
           }
@@ -805,17 +1080,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/VnptPhatsoRoomGroup"
+                "$ref": "#/components/schemas/RoomGroupUpdateModel"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/VnptPhatsoRoomGroup"
+                "$ref": "#/components/schemas/RoomGroupUpdateModel"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/VnptPhatsoRoomGroup"
+                "$ref": "#/components/schemas/RoomGroupUpdateModel"
               }
             }
           }
@@ -850,7 +1125,95 @@
         }
       }
     },
+    "/api/Management/room-groups/donvi/{donviId}": {
+      "get": {
+        "tags": [
+          "Management"
+        ],
+        "summary": "Lấy danh sách nhóm phòng theo đơn vị",
+        "parameters": [
+          {
+            "name": "donviId",
+            "in": "path",
+            "description": "ID đơn vị",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VnptPhatsoRoomGroup"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VnptPhatsoRoomGroup"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VnptPhatsoRoomGroup"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Management/room-groups": {
+      "get": {
+        "tags": [
+          "Management"
+        ],
+        "summary": "Lấy tất cả nhóm phòng",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VnptPhatSoRoomGroupResponseModel"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VnptPhatSoRoomGroupResponseModel"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VnptPhatSoRoomGroupResponseModel"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "post": {
         "tags": [
           "Management"
@@ -861,17 +1224,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/VnptPhatsoRoomGroup"
+                "$ref": "#/components/schemas/RoomGroupCreateModel"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/VnptPhatsoRoomGroup"
+                "$ref": "#/components/schemas/RoomGroupCreateModel"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/VnptPhatsoRoomGroup"
+                "$ref": "#/components/schemas/RoomGroupCreateModel"
               }
             }
           }
@@ -1110,6 +1473,63 @@
           }
         }
       }
+    },
+    "/api/Queue/statistics/weekly": {
+      "post": {
+        "tags": [
+          "Queue"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DateRangeRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DateRangeRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/DateRangeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VnptPhatSoStatiticsWeeklyByRoom"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VnptPhatSoStatiticsWeeklyByRoom"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VnptPhatSoStatiticsWeeklyByRoom"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1159,6 +1579,99 @@
           },
           "message": {
             "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CallerCreateModel": {
+        "type": "object",
+        "properties": {
+          "donviId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "callerName": {
+            "type": "string",
+            "nullable": true
+          },
+          "passVerify": {
+            "type": "string",
+            "nullable": true
+          },
+          "roomId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CallerUpdateModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "donviId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "callerName": {
+            "type": "string",
+            "nullable": true
+          },
+          "passVerify": {
+            "type": "string",
+            "nullable": true
+          },
+          "roomId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DateRangeRequest": {
+        "type": "object",
+        "properties": {
+          "donviId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "DonviCreateModel": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "nullable": true
+          },
+          "tenDonvi": {
+            "type": "string",
+            "nullable": true
+          },
+          "password": {
+            "type": "string",
+            "nullable": true
+          },
+          "enable": {
+            "type": "boolean",
             "nullable": true
           }
         },
@@ -1270,6 +1783,169 @@
         },
         "additionalProperties": false
       },
+      "PrinterCreateModel": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "donviId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "enable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "passVerify": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PrinterUpdateModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "donviId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "enable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "passVerify": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RoomCreateModel": {
+        "type": "object",
+        "properties": {
+          "donviId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "roomName": {
+            "type": "string",
+            "nullable": true
+          },
+          "roomGroupId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "enabled": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "lastPrintDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "printedNum": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "displayOrder": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "startNum": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "printName": {
+            "type": "string",
+            "nullable": true
+          },
+          "haveEmergency": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "isBackup": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "roomSubname": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RoomGroupCreateModel": {
+        "type": "object",
+        "properties": {
+          "groupName": {
+            "type": "string",
+            "nullable": true
+          },
+          "minNum": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "maxNum": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "donviId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RoomGroupUpdateModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "groupName": {
+            "type": "string",
+            "nullable": true
+          },
+          "minNum": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "maxNum": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "donviId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "RoomInfo": {
         "type": "object",
         "properties": {
@@ -1308,6 +1984,70 @@
         },
         "additionalProperties": false
       },
+      "RoomUpdateModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "donviId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "roomName": {
+            "type": "string",
+            "nullable": true
+          },
+          "roomGroupId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "enabled": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "lastPrintDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "printedNum": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "displayOrder": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "startNum": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "printName": {
+            "type": "string",
+            "nullable": true
+          },
+          "haveEmergency": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "isBackup": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "roomSubname": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "VnptDonvi": {
         "type": "object",
         "properties": {
@@ -1322,8 +2062,7 @@
             "nullable": true
           },
           "enable": {
-            "type": "integer",
-            "format": "int32",
+            "type": "boolean",
             "nullable": true
           },
           "username": {
@@ -1358,6 +2097,151 @@
               "$ref": "#/components/schemas/VnptPhatsoCaller"
             },
             "nullable": true
+          },
+          "vnptPhatsoQueueLogs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/VnptPhatsoQueueLog"
+            },
+            "nullable": true
+          },
+          "vnptPhatsoRoomGroups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/VnptPhatsoRoomGroup"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "VnptPhatSoRoomGroupResponseModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "groupName": {
+            "type": "string",
+            "nullable": true
+          },
+          "donviId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "donviName": {
+            "type": "string",
+            "nullable": true
+          },
+          "enabled": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "minNum": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "maxNum": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "VnptPhatSoRoomResponseModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "donviId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "roomName": {
+            "type": "string",
+            "nullable": true
+          },
+          "roomGroupId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "enabled": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "lastPrintDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "printedNum": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "displayOrder": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "startNum": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "printName": {
+            "type": "string",
+            "nullable": true
+          },
+          "haveEmergency": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "isBackup": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "roomSubname": {
+            "type": "string",
+            "nullable": true
+          },
+          "roomGroupName": {
+            "type": "string",
+            "nullable": true
+          },
+          "donviName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "VnptPhatSoStatiticsWeeklyByRoom": {
+        "type": "object",
+        "properties": {
+          "roomId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "donviId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "roomName": {
+            "type": "string",
+            "nullable": true
+          },
+          "weekCount": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
@@ -1403,6 +2287,49 @@
               "$ref": "#/components/schemas/VnptPhatsoQueue"
             },
             "nullable": true
+          },
+          "vnptPhatsoQueueLogs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/VnptPhatsoQueueLog"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "VnptPhatsoCallerResponseModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "donviId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "callerName": {
+            "type": "string",
+            "nullable": true
+          },
+          "passVerify": {
+            "type": "string",
+            "nullable": true
+          },
+          "roomId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "roomName": {
+            "type": "string",
+            "nullable": true
+          },
+          "donviName": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -1426,8 +2353,7 @@
             "nullable": true
           },
           "enable": {
-            "type": "integer",
-            "format": "int32",
+            "type": "boolean",
             "nullable": true
           },
           "passVerify": {
@@ -1444,6 +2370,37 @@
             "items": {
               "$ref": "#/components/schemas/VnptPhatsoPrinterRoom"
             },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "VnptPhatsoPrinterResponseModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "donviId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "donviName": {
+            "type": "string",
+            "nullable": true
+          },
+          "enable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "passVerify": {
+            "type": "string",
             "nullable": true
           }
         },
@@ -1495,8 +2452,7 @@
             "nullable": true
           },
           "isCalled": {
-            "type": "integer",
-            "format": "int32",
+            "type": "boolean",
             "nullable": true
           },
           "roomId": {
@@ -1519,13 +2475,11 @@
             "nullable": true
           },
           "isEmergency": {
-            "type": "integer",
-            "format": "int32",
+            "type": "boolean",
             "nullable": true
           },
           "isBackup": {
-            "type": "integer",
-            "format": "int32",
+            "type": "boolean",
             "nullable": true
           },
           "createdTime": {
@@ -1538,6 +2492,69 @@
           },
           "caller": {
             "$ref": "#/components/schemas/VnptPhatsoCaller"
+          }
+        },
+        "additionalProperties": false
+      },
+      "VnptPhatsoQueueLog": {
+        "required": [
+          "donviId"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "numOrder": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "isCalled": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "roomId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "callerId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "donviId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "callTime": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "isEmergency": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "isBackup": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "createdTime": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "caller": {
+            "$ref": "#/components/schemas/VnptPhatsoCaller"
+          },
+          "donvi": {
+            "$ref": "#/components/schemas/VnptDonvi"
+          },
+          "room": {
+            "$ref": "#/components/schemas/VnptPhatsoRoom"
           }
         },
         "additionalProperties": false
@@ -1566,8 +2583,7 @@
             "nullable": true
           },
           "enabled": {
-            "type": "integer",
-            "format": "int32",
+            "type": "boolean",
             "nullable": true
           },
           "lastPrintDate": {
@@ -1597,13 +2613,11 @@
             "nullable": true
           },
           "haveEmergency": {
-            "type": "integer",
-            "format": "int32",
+            "type": "boolean",
             "nullable": true
           },
           "isBackup": {
-            "type": "integer",
-            "format": "int32",
+            "type": "boolean",
             "nullable": true
           },
           "roomSubname": {
@@ -1636,6 +2650,13 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/VnptPhatsoCaller"
+            },
+            "nullable": true
+          },
+          "vnptPhatsoQueueLogs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/VnptPhatsoQueueLog"
             },
             "nullable": true
           }
@@ -1671,6 +2692,9 @@
             "type": "integer",
             "format": "int32",
             "nullable": true
+          },
+          "donvi": {
+            "$ref": "#/components/schemas/VnptDonvi"
           },
           "rooms": {
             "type": "array",

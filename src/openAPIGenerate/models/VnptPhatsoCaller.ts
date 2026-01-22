@@ -4,6 +4,7 @@
 /* eslint-disable */
 import type { VnptDonvi } from './VnptDonvi';
 import type { VnptPhatsoQueue } from './VnptPhatsoQueue';
+import type { VnptPhatsoQueueLog } from './VnptPhatsoQueueLog';
 import type { VnptPhatsoRoom } from './VnptPhatsoRoom';
 export type VnptPhatsoCaller = {
     id?: number;
@@ -14,5 +15,6 @@ export type VnptPhatsoCaller = {
     room?: VnptPhatsoRoom;
     donvi?: VnptDonvi;
     calledQueues?: Array<VnptPhatsoQueue> | null;
+    vnptPhatsoQueueLogs?: Array<VnptPhatsoQueueLog> | null;
 };
 

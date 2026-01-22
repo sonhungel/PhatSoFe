@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { baseService } from '../../services/base/baseService';
-import './Management.css';
-import { getAllCallers, getAllRoomGroups, getAllRooms, getDonvis, getPrinters, deleteDonvi, deleteCaller, deleteRoom, deletePrinter, deleteRoomGroup } from '../../services/managementService';
+import { getAllCallers, getAllRoomGroups, getDonvis, getPrinters, deleteDonvi, deleteCaller, deleteRoom, deletePrinter, deleteRoomGroup, getRoomsWithToken } from '../../services/managementService';
 import { mapPrintersToPrinterItems, mapRoomsToRoomItems, mapDonvisToDonviItems } from '../../map';
 import type {
   PrinterItem,
@@ -218,19 +217,19 @@ const Management = () => {
   const renderPagination = (totalItems: number) => {
     const totalPages = Math.ceil(totalItems / pageSize);
     return (
-      <div className="pagination">
-        <div className="page-size-selector">
-          <label>Rows per page:</label>
-          <select value={pageSize} onChange={(e) => { setPageSize(Number(e.target.value)); setCurrentPage(1); }}>
+      <div className="flex justify-between items-center p-4 bg-white border-t border-gray-200">
+        <div className="flex items-center gap-2">
+          <label className="text-sm text-black">Số dòng trên trang:</label>
+          <select value={pageSize} onChange={(e) => { setPageSize(Number(e.target.value)); setCurrentPage(1); }} className="px-2 py-1 border border-gray-300 rounded bg-white text-black">
             <option value={10}>10</option>
             <option value={20}>20</option>
             <option value={30}>30</option>
           </select>
         </div>
-        <div className="page-controls">
-          <button disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>Previous</button>
-          <span>Page {currentPage} of {totalPages}</span>
-          <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)}>Next</button>
+        <div className="flex items-center gap-4">
+          <button disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)} className="px-4 py-2 border border-gray-300 bg-white rounded cursor-pointer text-sm text-black transition-colors hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">Trước</button>
+          <span className="text-sm text-black">Trang {currentPage} trên {totalPages}</span>
+          <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)} className="px-4 py-2 border border-gray-300 bg-white rounded cursor-pointer text-sm text-black transition-colors hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">Tiếp</button>
         </div>
       </div>
     );
@@ -256,7 +255,7 @@ const Management = () => {
           break;
         case 'rooms':
           // Load room data - using default donviId for now
-          const roomResponse = await getAllRooms();
+          const roomResponse = await getRoomsWithToken();
           setRoomData(mapRoomsToRoomItems(roomResponse));
           break;
         case 'printers':
@@ -299,33 +298,33 @@ const Management = () => {
     const currentData = donviData;
     const paginatedData = currentData.slice((currentPage - 1) * pageSize, currentPage * pageSize);
     return (
-    <div className="table-container">
-      <div className="table-header">
-        <h3>Donvi Management</h3>
-        <button className="add-btn" onClick={handleAddDonviClick}>Add DonVi</button>
+    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+      <div className="p-6 border-b border-gray-200 flex justify-between items-center">
+        <h3 className="text-lg font-semibold text-gray-800 m-0">Quản trị Đơn vị</h3>
+        <button className="bg-green-400 hover:bg-green-500 text-white px-4 py-2 rounded cursor-pointer text-sm transition-colors" onClick={handleAddDonviClick}>Thêm Đơn vị</button>
       </div>
-      <table className="data-table">
+      <table className="w-full border-collapse">
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Ten Don vi</th>
-            <th>Is Active</th>
-            <th>Username</th>
-            <th>Actions</th>
+            <th className="p-4 text-left border-b border-gray-200 bg-gray-50 font-semibold text-gray-700">ID</th>
+            <th className="p-4 text-left border-b border-gray-200 bg-gray-50 font-semibold text-gray-700">Tên Đơn vị</th>
+            <th className="p-4 text-left border-b border-gray-200 bg-gray-50 font-semibold text-gray-700">Đang hoạt động</th>
+            <th className="p-4 text-left border-b border-gray-200 bg-gray-50 font-semibold text-gray-700">Tên người dùng</th>
+            <th className="p-4 text-left border-b border-gray-200 bg-gray-50 font-semibold text-gray-700">Hành động</th>
           </tr>
         </thead>
         <tbody>
           {
             paginatedData.map((item) => (
-              <tr key={item.id}>
-                <td>{item.id}</td>
-                <td>{item.tenDonvi}</td>
-                <td>
-                  <input type="checkbox" checked={item.enable} readOnly className="light-checkbox" />
+              <tr key={item.id} className="hover:bg-gray-50">
+                <td className="p-4 border-b border-gray-200 text-black">{item.id}</td>
+                <td className="p-4 border-b border-gray-200 text-black">{item.tenDonvi}</td>
+                <td className="p-4 border-b border-gray-200">
+                  <input type="checkbox" checked={item.enable} readOnly  />
                 </td>
-                <td>{item.username}</td>
-                <td>
-                  <button className="delete-btn" onClick={() => handleDeleteDonvi(item)}>Delete</button>
+                <td className="p-4 border-b border-gray-200 text-black">{item.username}</td>
+                <td className="p-4 border-b border-gray-200">
+                  <button className="bg-red-400 hover:bg-red-500 text-white px-2 py-1 rounded text-xs cursor-pointer transition-colors" onClick={() => handleDeleteDonvi(item)}>Xóa</button>
                 </td>
               </tr>
             ))
@@ -350,35 +349,35 @@ const Management = () => {
     const currentData = callerData;
     const paginatedData = currentData.slice((currentPage - 1) * pageSize, currentPage * pageSize);
     return (
-    <div className="table-container">
-      <div className="table-header">
-        <h3>Caller Management</h3>
-        <button className="add-btn" onClick={handleAddCallerClick} disabled={callerDataLoading}>
-          {callerDataLoading ? 'Loading...' : 'Add New Caller'}
+    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+      <div className="p-6 border-b border-gray-200 flex justify-between items-center">
+        <h3 className="text-lg font-semibold text-gray-800 m-0">Quản trị Caller</h3>
+        <button className="bg-green-400 hover:bg-green-500 text-white px-4 py-2 rounded cursor-pointer text-sm transition-colors disabled:opacity-50" onClick={handleAddCallerClick} disabled={callerDataLoading}>
+          {callerDataLoading ? 'Đang tải...' : 'Thêm Caller mới'}
         </button>
       </div>
-      <table className="data-table">
+      <table className="w-full border-collapse">
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Caller Name</th>
-            <th>Pass Verify</th>
-            <th>Room ID</th>
-            <th>Donvi ID</th>
-            <th>Actions</th>
+            <th className="p-4 text-left border-b border-gray-200 bg-gray-50 font-semibold text-gray-700">ID</th>
+            <th className="p-4 text-left border-b border-gray-200 bg-gray-50 font-semibold text-gray-700">Tên Caller</th>
+            <th className="p-4 text-left border-b border-gray-200 bg-gray-50 font-semibold text-gray-700">Xác minh mật khẩu</th>
+            <th className="p-4 text-left border-b border-gray-200 bg-gray-50 font-semibold text-gray-700">Phòng</th>
+            <th className="p-4 text-left border-b border-gray-200 bg-gray-50 font-semibold text-gray-700">Đơn vị</th>
+            <th className="p-4 text-left border-b border-gray-200 bg-gray-50 font-semibold text-gray-700">Hành động</th>
           </tr>
         </thead>
         <tbody>
           {paginatedData.map((item) => (
-            <tr key={item.id}>
-              <td>{item.id}</td>
-              <td>{item.callerName}</td>
-              <td>{item.passVerify}</td>
-              <td>{item.roomId}</td>
-              <td>{item.donviId}</td>
-              <td>
-                <button className="edit-btn" onClick={() => handleEditCaller(item)}>Edit</button>
-                <button className="delete-btn" onClick={() => handleDeleteCaller(item)}>Delete</button>
+            <tr key={item.id} className="hover:bg-gray-50">
+              <td className="p-4 border-b border-gray-200 text-black">{item.id}</td>
+              <td className="p-4 border-b border-gray-200 text-black">{item.callerName}</td>
+              <td className="p-4 border-b border-gray-200 text-black">{item.passVerify}</td>
+              <td className="p-4 border-b border-gray-200 text-black">{item.roomName}</td>
+              <td className="p-4 border-b border-gray-200 text-black">{item.donviName}</td>
+              <td className="p-4 border-b border-gray-200">
+                <button className="bg-blue-400 hover:bg-blue-500 text-white px-2 py-1 rounded text-xs cursor-pointer transition-colors mr-2" onClick={() => handleEditCaller(item)}>Sửa</button>
+                <button className="bg-red-400 hover:bg-red-500 text-white px-2 py-1 rounded text-xs cursor-pointer transition-colors" onClick={() => handleDeleteCaller(item)}>Xoá</button>
               </td>
             </tr>
           ))}
@@ -406,62 +405,60 @@ const Management = () => {
     const currentData = roomData;
     const paginatedData = currentData.slice((currentPage - 1) * pageSize, currentPage * pageSize);
     return (
-    <div className="table-container">
-      <div className="table-header">
-        <h3>Room Management</h3>
-        <button className="add-btn" onClick={handleAddRoomClick} disabled={roomDataLoading}>
-          {roomDataLoading ? 'Loading...' : 'Add New Room'}
+    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+      <div className="p-6 border-b border-gray-200 flex justify-between items-center">
+        <h3 className="text-lg font-semibold text-gray-800 m-0">Quản trị Phòng</h3>
+        <button className="bg-green-400 hover:bg-green-500 text-white px-4 py-2 rounded cursor-pointer text-sm transition-colors disabled:opacity-50" onClick={handleAddRoomClick} disabled={roomDataLoading}>
+          {roomDataLoading ? 'Đang tải...' : 'Thêm Phòng mới'}
         </button>
       </div>
-      <table className="data-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Don vi Id</th>
-            <th>Room Name</th>
-            <th>Room Group Id</th>
-            <th>Enabled</th>
-            <th>LastPrintDate</th>
-            <th>Printed Num</th>
-            <th>DisplayOrder</th>
-            <th>StartNum</th>
-            <th>PrintName</th>
-            <th>HaveEmergency</th>
-            <th>IsBackup</th>
-            <th>RoomSubname</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {paginatedData.map((item) => (
-            <tr key={item.id}>
-              <td>{item.id}</td>
-              <td>{item.donviId}</td>
-              <td>{item.roomName}</td>
-              <td>{item.roomGroupId}</td>
-              <td>
-                <input type="checkbox" checked={item.enabled} readOnly className="light-checkbox" />
-              </td>
-              <td>{formatDate(item.lastPrintDate)}</td>
-              <td>{item.printedNum}</td>
-              <td>{item.displayOrder}</td>
-              <td>{item.startNum}</td>
-              <td>{item.printName}</td>
-              <td>
-                <input type="checkbox" checked={item.haveEmergency} readOnly className="light-checkbox" />
-              </td>
-              <td>
-                <input type="checkbox" checked={item.isBackup} readOnly className="light-checkbox" />
-              </td>
-              <td>{item.roomSubname}</td>
-              <td>
-                <button className="edit-btn" onClick={() => handleEditRoom(item)}>Edit</button>
-                <button className="delete-btn" onClick={() => handleDeleteRoom(item)}>Delete</button>
-              </td>
+      <div className="overflow-x-auto">
+        <table className="w-full border-collapse text-sm">
+          <thead>
+            <tr>
+              <th className="p-4 text-left border-b border-gray-200 bg-gray-50 font-semibold text-gray-700">ID</th>
+              <th className="p-4 text-left border-b border-gray-200 bg-gray-50 font-semibold text-gray-700">Đơn vị</th>
+              <th className="p-4 text-left border-b border-gray-200 bg-gray-50 font-semibold text-gray-700">Tên Phòng</th>
+              <th className="p-4 text-left border-b border-gray-200 bg-gray-50 font-semibold text-gray-700">Đã kích hoạt</th>
+              <th className="p-4 text-left border-b border-gray-200 bg-gray-50 font-semibold text-gray-700">Ngày in cuối</th>
+              <th className="p-4 text-left border-b border-gray-200 bg-gray-50 font-semibold text-gray-700">Số lần in</th>
+              <th className="p-4 text-left border-b border-gray-200 bg-gray-50 font-semibold text-gray-700">Thứ tự hiển thị</th>
+              <th className="p-4 text-left border-b border-gray-200 bg-gray-50 font-semibold text-gray-700">Số bắt đầu</th>
+              <th className="p-4 text-left border-b border-gray-200 bg-gray-50 font-semibold text-gray-700">Tên in</th>
+              <th className="p-4 text-left border-b border-gray-200 bg-gray-50 font-semibold text-gray-700">Khẩn cấp</th>
+              <th className="p-4 text-left border-b border-gray-200 bg-gray-50 font-semibold text-gray-700">Bản sao lưu</th>
+              <th className="p-4 text-left border-b border-gray-200 bg-gray-50 font-semibold text-gray-700">Hành động</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {paginatedData.map((item) => (
+              <tr key={item.id} className="hover:bg-gray-50">
+                <td className="p-4 border-b border-gray-200 text-black">{item.id}</td>
+                <td className="p-4 border-b border-gray-200 text-black">{item.donviName}</td>
+                <td className="p-4 border-b border-gray-200 text-black">{item.roomName}</td>
+                <td className="p-4 border-b border-gray-200">
+                  <input type="checkbox" checked={item.enabled} readOnly />
+                </td>
+                <td className="p-4 border-b border-gray-200 text-black">{formatDate(item.lastPrintDate)}</td>
+                <td className="p-4 border-b border-gray-200 text-black">{item.printedNum}</td>
+                <td className="p-4 border-b border-gray-200 text-black">{item.displayOrder}</td>
+                <td className="p-4 border-b border-gray-200 text-black">{item.startNum}</td>
+                <td className="p-4 border-b border-gray-200 text-black">{item.printName}</td>
+                <td className="p-4 border-b border-gray-200">
+                  <input type="checkbox" checked={item.haveEmergency} readOnly />
+                </td>
+                <td className="p-4 border-b border-gray-200">
+                  <input type="checkbox" checked={item.isBackup} readOnly />
+                </td>
+                <td className="p-4 border-b border-gray-200">
+                  <button className="bg-blue-400 hover:bg-blue-500 text-white px-2 py-1 rounded text-xs cursor-pointer transition-colors mr-2" onClick={() => handleEditRoom(item)}>Sửa</button>
+                  <button className="bg-red-400 hover:bg-red-500 text-white px-2 py-1 rounded text-xs cursor-pointer transition-colors" onClick={() => handleDeleteRoom(item)}>Xoá</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       {renderPagination(currentData.length)}
       <RoomPopup
         isOpen={showRoomPopup}
@@ -484,37 +481,37 @@ const Management = () => {
     const currentData = printerData;
     const paginatedData = currentData.slice((currentPage - 1) * pageSize, currentPage * pageSize);
     return (
-    <div className="table-container">
-      <div className="table-header">
-        <h3>Printer Management</h3>
-        <button className="add-btn" onClick={handleAddPrinterClick} disabled={printerDataLoading}>
-          {printerDataLoading ? 'Loading...' : 'Add New Printer'}
+    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+      <div className="p-6 border-b border-gray-200 flex justify-between items-center">
+        <h3 className="text-lg font-semibold text-gray-800 m-0">Quản trị Máy in</h3>
+        <button className="bg-green-400 hover:bg-green-500 text-white px-4 py-2 rounded cursor-pointer text-sm transition-colors disabled:opacity-50" onClick={handleAddPrinterClick} disabled={printerDataLoading}>
+          {printerDataLoading ? 'Đang tải...' : 'Thêm Máy in mới'}
         </button>
       </div>
-      <table className="data-table">
+      <table className="w-full border-collapse">
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Enable</th>
-            <th>Pass Verify</th>
-            <th>Donvi ID</th>
-            <th>Actions</th>
+            <th className="p-4 text-left border-b border-gray-200 bg-gray-50 font-semibold text-gray-700">ID</th>
+            <th className="p-4 text-left border-b border-gray-200 bg-gray-50 font-semibold text-gray-700">Tên</th>
+            <th className="p-4 text-left border-b border-gray-200 bg-gray-50 font-semibold text-gray-700">Đã kích hoạt</th>
+            <th className="p-4 text-left border-b border-gray-200 bg-gray-50 font-semibold text-gray-700">Xác minh mật khẩu</th>
+            <th className="p-4 text-left border-b border-gray-200 bg-gray-50 font-semibold text-gray-700">Đơn vị</th>
+            <th className="p-4 text-left border-b border-gray-200 bg-gray-50 font-semibold text-gray-700">Hành động</th>
           </tr>
         </thead>
         <tbody>
           {paginatedData.map((item) => (
-            <tr key={item.id}>
-              <td>{item.id}</td>
-              <td>{item.name}</td>
-              <td>
-                <input type="checkbox" checked={item.enable} readOnly className="light-checkbox" />
+            <tr key={item.id} className="hover:bg-gray-50">
+              <td className="p-4 border-b border-gray-200 text-black">{item.id}</td>
+              <td className="p-4 border-b border-gray-200 text-black">{item.name}</td>
+              <td className="p-4 border-b border-gray-200">
+                <input type="checkbox" checked={item.enable} readOnly />
               </td>
-              <td>{item.passVerify}</td>
-              <td>{item.donviId}</td>
-              <td>
-                <button className="edit-btn" onClick={() => handleEditPrinter(item)}>Edit</button>
-                <button className="delete-btn" onClick={() => handleDeletePrinter(item)}>Delete</button>
+              <td className="p-4 border-b border-gray-200 text-black">{item.passVerify}</td>
+              <td className="p-4 border-b border-gray-200 text-black">{item.donviName}</td>
+              <td className="p-4 border-b border-gray-200">
+                <button className="bg-blue-400 hover:bg-blue-500 text-white px-2 py-1 rounded text-xs cursor-pointer transition-colors mr-2" onClick={() => handleEditPrinter(item)}>Sửa</button>
+                <button className="bg-red-400 hover:bg-red-500 text-white px-2 py-1 rounded text-xs cursor-pointer transition-colors" onClick={() => handleDeletePrinter(item)}>Xoá</button>
               </td>
             </tr>
           ))}
@@ -542,35 +539,35 @@ const Management = () => {
     const currentData = roomGroupData;
     const paginatedData = currentData.slice((currentPage - 1) * pageSize, currentPage * pageSize);
     return (
-    <div className="table-container">
-      <div className="table-header">
-        <h3>Room Group Management</h3>
-        <button className="add-btn" onClick={handleAddRoomGroupClick} disabled={roomGroupDataLoading}>
-          {roomGroupDataLoading ? 'Loading...' : 'Add New Group'}
+    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+      <div className="p-6 border-b border-gray-200 flex justify-between items-center">
+        <h3 className="text-lg font-semibold text-gray-800 m-0">Quản trị Nhóm Phòng</h3>
+        <button className="bg-green-400 hover:bg-green-500 text-white px-4 py-2 rounded cursor-pointer text-sm transition-colors disabled:opacity-50" onClick={handleAddRoomGroupClick} disabled={roomGroupDataLoading}>
+          {roomGroupDataLoading ? 'Đang tải...' : 'Thêm Nhóm mới'}
         </button>
       </div>
-      <table className="data-table">
+      <table className="w-full border-collapse">
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Group Name</th>
-            <th>Min Num</th>
-            <th>Max Num</th>
-            <th>Donvi ID</th>
-            <th>Actions</th>
+            <th className="p-4 text-left border-b border-gray-200 bg-gray-50 font-semibold text-gray-700">ID</th>
+            <th className="p-4 text-left border-b border-gray-200 bg-gray-50 font-semibold text-gray-700">Tên Nhóm</th>
+            <th className="p-4 text-left border-b border-gray-200 bg-gray-50 font-semibold text-gray-700">Số lượng tối thiểu</th>
+            <th className="p-4 text-left border-b border-gray-200 bg-gray-50 font-semibold text-gray-700">Số lượng tối đa</th>
+            <th className="p-4 text-left border-b border-gray-200 bg-gray-50 font-semibold text-gray-700">Đơn vị</th>
+            <th className="p-4 text-left border-b border-gray-200 bg-gray-50 font-semibold text-gray-700">Hành động</th>
           </tr>
         </thead>
         <tbody>
           {paginatedData.map((item) => (
-            <tr key={item.id}>
-              <td>{item.id}</td>
-              <td>{item.groupName}</td>
-              <td>{item.minNum}</td>
-              <td>{item.maxNum}</td>
-              <td>{item.donviId}</td>
-              <td>
-                <button className="edit-btn" onClick={() => handleEditRoomGroup(item)}>Edit</button>
-                <button className="delete-btn" onClick={() => handleDeleteRoomGroup(item)}>Delete</button>
+            <tr key={item.id} className="hover:bg-gray-50">
+              <td className="p-4 border-b border-gray-200 text-black">{item.id}</td>
+              <td className="p-4 border-b border-gray-200 text-black">{item.groupName}</td>
+              <td className="p-4 border-b border-gray-200 text-black">{item.minNum}</td>
+              <td className="p-4 border-b border-gray-200 text-black">{item.maxNum}</td>
+              <td className="p-4 border-b border-gray-200 text-black">{item.donviName}</td>
+              <td className="p-4 border-b border-gray-200">
+                <button className="bg-blue-400 hover:bg-blue-500 text-white px-2 py-1 rounded text-xs cursor-pointer transition-colors mr-2" onClick={() => handleEditRoomGroup(item)}>Sửa</button>
+                <button className="bg-red-400 hover:bg-red-500 text-white px-2 py-1 rounded text-xs cursor-pointer transition-colors" onClick={() => handleDeleteRoomGroup(item)}>Xoá</button>
               </td>
             </tr>
           ))}
@@ -605,7 +602,7 @@ const Management = () => {
 
   const renderContent = () => {
     if (loading) {
-      return <div className="loading">Loading data...</div>;
+      return <div className="loading">Đang tải dữ liệu...</div>;
     }
 
     switch (activeTab) {
@@ -626,54 +623,60 @@ const Management = () => {
 
   return (
     
-    <div className="management-container">
-      <header className="management-header">
-        <h1>Management Dashboard</h1>
-        <div className="user-info">
-          <button className="logout-btn" onClick={handleLogout}>Logout</button>
+    <div className="h-screen w-screen bg-gray-100 fixed top-0 left-0 m-0 p-0 overflow-y-auto">
+      <header className="bg-white p-4 md:px-8 shadow-md flex justify-between items-center">
+        <h1 className="text-xl md:text-2xl font-bold text-gray-800 m-0">Bảng Quản lý</h1>
+        <div className="flex items-center gap-4">
+          <button className="bg-red-400 hover:bg-red-500 text-white px-4 py-2 rounded cursor-pointer text-sm transition-colors" onClick={handleLogout}>Đăng xuất</button>
         </div>
       </header>
 
-      <nav className="management-nav">
+      <nav className="bg-white px-4 md:px-8 border-b border-gray-200 flex flex-wrap gap-0">
         <button
-          className={`nav-tab ${activeTab === 'donvi' ? 'active' : ''}`}
+          className={`px-4 md:px-6 py-4 border-b-4 transition-all text-gray-600 hover:bg-gray-50 hover:text-gray-800 ${activeTab === 'donvi' ? 'border-blue-500 text-blue-600 font-medium' : 'border-transparent'}`}
           onClick={() => setActiveTab('donvi')}
         >
-          Donvi Management
+          Quản lý Đơn vị
         </button>
         <button
-          className={`nav-tab ${activeTab === 'caller' ? 'active' : ''}`}
+          className={`px-4 md:px-6 py-4 border-b-4 transition-all text-gray-600 hover:bg-gray-50 hover:text-gray-800 ${activeTab === 'caller' ? 'border-blue-500 text-blue-600 font-medium' : 'border-transparent'}`}
           onClick={() => setActiveTab('caller')}
         >
-          Caller Management
+          Quản lý Caller
         </button>
         <button
-          className={`nav-tab ${activeTab === 'rooms' ? 'active' : ''}`}
+          className={`px-4 md:px-6 py-4 border-b-4 transition-all text-gray-600 hover:bg-gray-50 hover:text-gray-800 ${activeTab === 'rooms' ? 'border-blue-500 text-blue-600 font-medium' : 'border-transparent'}`}
           onClick={() => setActiveTab('rooms')}
         >
-          Room Management
+          Quản lý Phòng
         </button>
         <button
-          className={`nav-tab ${activeTab === 'printers' ? 'active' : ''}`}
+          className={`px-4 md:px-6 py-4 border-b-4 transition-all text-gray-600 hover:bg-gray-50 hover:text-gray-800 ${activeTab === 'printers' ? 'border-blue-500 text-blue-600 font-medium' : 'border-transparent'}`}
           onClick={() => setActiveTab('printers')}
         >
-          Printer Management
+          Quản lý Máy in
         </button>
         <button
-          className={`nav-tab ${activeTab === 'roomGroups' ? 'active' : ''}`}
+          className={`px-4 md:px-6 py-4 border-b-4 transition-all text-gray-600 hover:bg-gray-50 hover:text-gray-800 ${activeTab === 'roomGroups' ? 'border-blue-500 text-blue-600 font-medium' : 'border-transparent'}`}
           onClick={() => setActiveTab('roomGroups')}
         >
-          Room Groups
+          Quản lý Nhóm Phòng
+        </button>
+        <button
+          className="bg-green-400 hover:bg-green-500 mb-3 text-white px-4 md:px-6 py-4 rounded cursor-pointer text-sm transition-colors ml-auto"
+          onClick={() => navigate('/statistics')}
+        >
+          Thống kê
         </button>
       </nav>
 
-      <main className="management-content">
+      <main className="p-4 md:p-8">
         {renderContent()}
       </main>
 
       <ConfirmationPopup
         isOpen={showDeleteConfirmation}
-        message="Verify delete data"
+        message="Xác nhận xoá dữ liệu"
         onConfirm={handleConfirmDelete}
         onCancel={handleCancelDelete}
       />

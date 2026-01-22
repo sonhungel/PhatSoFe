@@ -1,5 +1,5 @@
 import { baseService } from "./base/baseService";
-import type { VnptDonvi, VnptPhatsoCaller, VnptPhatsoRoom, VnptPhatsoRoomGroup } from "../openAPIGenerate";
+import type { VnptDonvi, VnptPhatsoCaller, VnptPhatsoCallerResponseModel, VnptPhatsoPrinterResponseModel, VnptPhatsoRoom, VnptPhatsoRoomGroup, VnptPhatSoRoomGroupResponseModel, VnptPhatSoRoomResponseModel } from "../openAPIGenerate";
 import type { VnptPhatsoPrinter } from "../openAPIGenerate";
 
 // Types for API requests and responses
@@ -118,8 +118,8 @@ export async function deleteDonvi(id: number): Promise<void> {
 }
 
 // Printer functions
-export async function getPrinters(): Promise<VnptPhatsoPrinter[]> {
-  const { data } = await baseService.http.get<VnptPhatsoPrinter[]>('/Management/printers');
+export async function getPrinters(): Promise<VnptPhatsoPrinterResponseModel[]> {
+  const { data } = await baseService.http.get<VnptPhatsoPrinterResponseModel[]>('/Management/allPrinters');
   return data;
 }
 
@@ -150,8 +150,8 @@ export async function GetRoomsByDonviWithoutValidateToken(donviId: number): Prom
   return data;
 }
 
-export async function getAllRooms(): Promise<VnptPhatsoRoom[]> {
-  const { data } = await baseService.http.get<VnptPhatsoRoom[]>(`/Management/rooms`);
+export async function getRoomsWithToken(): Promise<VnptPhatSoRoomResponseModel[]> {
+  const { data } = await baseService.http.get<VnptPhatSoRoomResponseModel[]>(`/Management/roomsWithToken`);
   return data;
 }
 
@@ -174,8 +174,8 @@ export async function getCallersByDonvi(donviId: number): Promise<VnptPhatsoCall
   return data;
 }
 
-export async function getAllCallers(): Promise<VnptPhatsoCaller[]> {
-  const { data } = await baseService.http.get<VnptPhatsoCaller[]>(`/Management/callers`);
+export async function getAllCallers(): Promise<VnptPhatsoCallerResponseModel[]> {
+  const { data } = await baseService.http.get<VnptPhatsoCallerResponseModel[]>(`/Management/callers`);
   return data;
 }
 
@@ -202,8 +202,8 @@ export async function getRoomGroup(id: number): Promise<VnptPhatsoRoomGroup> {
   return data;
 }
 
-export async function getAllRoomGroups(): Promise<VnptPhatsoRoomGroup[]> {
-  const { data } = await baseService.http.get<VnptPhatsoRoomGroup[]>(`/Management/room-groups`);
+export async function getAllRoomGroups(): Promise<VnptPhatSoRoomGroupResponseModel[]> {
+  const { data } = await baseService.http.get<VnptPhatSoRoomGroupResponseModel[]>(`/Management/room-groups`);
   return data;
 }
 export async function getAllRoomGroupsByDonvi(id: number): Promise<VnptPhatsoRoomGroup[]> {

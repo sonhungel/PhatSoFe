@@ -6,13 +6,14 @@ import type { VnptDonvi } from './VnptDonvi';
 import type { VnptPhatsoCaller } from './VnptPhatsoCaller';
 import type { VnptPhatsoPrinterRoom } from './VnptPhatsoPrinterRoom';
 import type { VnptPhatsoQueue } from './VnptPhatsoQueue';
+import type { VnptPhatsoQueueLog } from './VnptPhatsoQueueLog';
 import type { VnptPhatsoRoomGroup } from './VnptPhatsoRoomGroup';
 export type VnptPhatsoRoom = {
     id?: number;
     donviId?: number | null;
     roomName?: string | null;
     roomGroupId?: number | null;
-    enabled?: number | null;
+    enabled?: boolean | null;
     lastPrintDate?: string | null;
     printedNum?: number | null;
     displayOrder?: number | null;
@@ -21,10 +22,11 @@ export type VnptPhatsoRoom = {
     haveEmergency?: boolean | null;
     isBackup?: boolean | null;
     roomSubname?: string | null;
-
     roomGroup?: VnptPhatsoRoomGroup;
     donvi?: VnptDonvi;
     queues?: Array<VnptPhatsoQueue> | null;
     printerRooms?: Array<VnptPhatsoPrinterRoom> | null;
     callers?: Array<VnptPhatsoCaller> | null;
+    vnptPhatsoQueueLogs?: Array<VnptPhatsoQueueLog> | null;
 };
+

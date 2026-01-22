@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { createDonvi, } from '../../../services/managementService';
-import './DonviPopup.css';
 
 interface DonviPopupProps {
   isOpen: boolean;
@@ -55,75 +54,77 @@ const DonviPopup = ({ isOpen, onClose, onSuccess }: DonviPopupProps) => {
   if (!isOpen) return null;
 
   return (
-    <div className="popup-overlay" onClick={onClose}>
-      <div className="popup-content" onClick={(e) => e.stopPropagation()}>
-        <div className="popup-header">
-          <h3>Add Donvi</h3>
-          <button className="close-btn" onClick={onClose}>×</button>
+    <div className="fixed inset-0 bg-gray-300 bg-opacity-50 flex justify-center items-center z-50" onClick={onClose}>
+      <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 max-h-[90vh] overflow-hidden flex flex-col" onClick={(e) => e.stopPropagation()}>
+        <div className="p-6 border-b border-gray-200 flex justify-between items-center">
+          <h3 className="text-lg font-semibold text-gray-800 m-0">Thêm đơn vị</h3>
+          <button className="text-gray-400 hover:text-gray-600 text-xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors" onClick={onClose}>×</button>
         </div>
 
-        <form onSubmit={handleSubmit} className="popup-form">
-          <div className="popup-body">
-            {error && <div className="error-message">{error}</div>}
+        <form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-hidden">
+          <div className="p-6 overflow-y-auto flex-1">
+            {error && <div className="bg-red-50 text-red-600 p-3 rounded-lg mb-4 border border-red-200">{error}</div>}
 
-            <div className="form-group">
-              <label htmlFor="tenDonvi">Ten Donvi *</label>
+            <div className="flex flex-col gap-2 mb-4">
+              <label htmlFor="tenDonvi" className="text-sm font-medium text-gray-700">Tên đơn vị *</label>
               <input
                 type="text"
                 id="tenDonvi"
                 name="tenDonvi"
                 value={formData.tenDonvi}
                 onChange={handleInputChange}
-                placeholder="Enter ten donvi"
+                placeholder="Nhập tên đơn vị"
+                className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                 required
               />
             </div>
 
-            <div className="form-group">
-              <label htmlFor="username">Username *</label>
+            <div className="flex flex-col gap-2 mb-4">
+              <label htmlFor="username" className="text-sm font-medium text-gray-700">Tên đăng nhập *</label>
               <input
                 type="text"
                 id="username"
                 name="username"
                 value={formData.username}
                 onChange={handleInputChange}
-                placeholder="Enter username"
+                placeholder="Nhập tên đăng nhập"
+                className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                 required
               />
             </div>
 
-            <div className="form-group">
-              <label htmlFor="password">Password *</label>
+            <div className="flex flex-col gap-2 mb-4">
+              <label htmlFor="password" className="text-sm font-medium text-gray-700">Mật khẩu *</label>
               <input
                 type="password"
                 id="password"
                 name="password"
                 value={formData.password}
                 onChange={handleInputChange}
-                placeholder="Enter password"
+                placeholder="Nhập mật khẩu"
+                className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                 required
               />
             </div>
 
-            <div className="form-group checkbox-group">
-              <label htmlFor="enable">
-                <input
-                  type="checkbox"
-                  id="enable"
-                  name="enable"
-                  checked={formData.enable}
-                  onChange={handleInputChange}
-                />
-                Enable
-              </label>
+            <div className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                id="enable"
+                name="enable"
+                checked={formData.enable}
+                onChange={handleInputChange}
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+              />
+              <label htmlFor="enable" className="text-sm font-medium text-gray-700">Kích hoạt</label>
             </div>
           </div>
-          <div className="popup-actions">
-            <button type="button" className="cancel-btn" onClick={onClose} disabled={loading}>
-              Cancel
+          <div className="p-6 border-t border-gray-200 flex justify-end gap-3">
+            <button type="button" className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded font-medium text-sm transition-colors disabled:opacity-50" onClick={onClose} disabled={loading}>
+              Hủy
             </button>
-            <button type="submit" className="submit-btn" disabled={loading}>
-              {loading ? 'Creating...' : 'Create Donvi'}
+            <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded font-medium text-sm transition-colors disabled:opacity-50" disabled={loading}>
+              {loading ? 'Đang tạo...' : 'Tạo đơn vị'}
             </button>
           </div>
         </form>
